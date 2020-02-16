@@ -126,8 +126,10 @@
 
 
 @push('prepend-style')
-<link rel="stylesheet" href="{{url('frontend/libraries/gijgo/css/gijgo.min.css')}}">
 <link rel="stylesheet" href="{{url('frontend/libraries/bootstrap/css/dataTables.bootstrap4.min.css')}}" />
+<link rel="stylesheet" href="{{url('frontend/libraries/gijgo/css/gijgo.min.css')}}">
+
+{{-- <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> --}}
 @endpush
 
 @push('addon-script')
@@ -135,10 +137,10 @@
 <script src="{{url('frontend/libraries/jquery/jquery-3.4.1.min.js')}}"></script>
 <script src="{{url('frontend/libraries/jquery/jquery.dataTables.min.js')}}"></script>
 
-<script src="{{url('frontend/libraries/gijgo/js/gijgo.min.js')}}"></script>
 <script src="{{url('frontend/libraries/bootstrap/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{url ('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
+<script src="{{url('frontend/libraries/gijgo/js/gijgo.min.js')}}"></script>
+{{-- <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script> --}}
     <script>
       function myFunction() {
           var checkbox = $("#myCheck");
@@ -158,7 +160,7 @@
 
        $(document).ready(function(){
             $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
+                format: 'dd-mm-yyyy',
                 uiLibrary: 'bootstrap4',
                 icons:{
                     rightIcon: '<img src="{{url('frontend/images/ic_doe.png')}}"/>'
@@ -166,7 +168,7 @@
             });
             
             $('.datepicker2').datepicker({
-                format: 'yyyy-mm-dd',
+                format: 'dd-mm-yyyy',
                 uiLibrary: 'bootstrap4',
                 icons:{
                     rightIcon: '<img src="{{url('frontend/images/ic_doe.png')}}"/>'

@@ -310,12 +310,12 @@ class DatabasesController extends Controller
             // // print_r("tambah periode check");
         } else {
             $form_data = array(
-                'nama' =>$request->nama,
+                'nama' =>$request->input('nama'),
                 'id_periode' =>$request->id_periode,
-                'tingkat_kompetensi' =>$request->tingkat_kompetensi,
-                'tanggal_terbit' =>$request->tanggal_terbit,
-                'tanggal_pengambilan' =>$request->tanggal_pengambilan,
-                'keterangan' =>$request->keterangan
+                'tingkat_kompetensi' =>$request->input('tingkat_kompetensi'),
+                'tanggal_terbit' =>$a,
+                'tanggal_pengambilan' =>$b,
+                'keterangan' =>$request->input('keterangan')
             );
 
             alumnidatabases::whereId($request->hidden_id)->update($form_data);

@@ -15,7 +15,7 @@ class alumnidatabases_seeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        for($i = 1; $i <= 7; $i++){
+        for($i = 1; $i <= 12; $i++){
  
             // insert data ke table pegawai menggunakan Faker
           DB::table('alumnidatabases')->insert([
