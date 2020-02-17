@@ -107,13 +107,13 @@
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr>
-                    <th >Nama</th>
-                    <th >Periode</th>
+                    <th width="22%">Nama</th>
+                    <th width="10%">Periode</th>
                     <th >Tingkat<br>Kompetensi</th>
                     <th >Tanggal<br>Terbit</th>
                     <th >Tanggal<br>Pengambilan</th>
                     <th >Keterangan</th>
-                    <th >Action</th>
+                    <th width="10%">Action</th>
                   </tr>
                 </thead>
               </table>
