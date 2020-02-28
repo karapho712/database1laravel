@@ -25,6 +25,7 @@ class periodesRequest extends FormRequest
     {
         return [
             'periode' => 'required', 
+            'keterangan' =>'string|nullable'
             
             //
         ];

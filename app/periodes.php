@@ -10,7 +10,7 @@ class periodes extends Model
     use softDeletes;
 
     protected $fillable = [
-        'periode'
+        'periode', 'keterangan'
     ];
 
     public function alumni(){

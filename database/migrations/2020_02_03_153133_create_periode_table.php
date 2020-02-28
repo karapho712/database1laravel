@@ -16,6 +16,7 @@ class CreatePeriodeTable extends Migration
         Schema::create('periodes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('periode');
+            $table->string('keterangan')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

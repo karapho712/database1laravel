@@ -10,4 +10,4 @@
   <script src="{{url('backend/js/sb-admin-2.min.js')}}"></script>
 
   <!-- Page level plugins -->
-  <script src="{{url('backend/vendor/chart.js/Chart.min.js')}}"></script>
+  {{-- <script src="{{url('backend/vendor/chart.js/Chart.min.js')}}"></script> --}}

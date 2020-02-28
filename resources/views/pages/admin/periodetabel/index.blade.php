@@ -12,8 +12,8 @@
         <div class="card shadow mb-4">
           <div class="card-header py-3">
                <div class="d-sm-flex align-items-center justify-content-between"> 
-                  <h1 class="h3 mb-2 text-gray-800">Data Mahasiswa</h1>
-                  <button type="button" class="btn btn-success btn-icon-split m-1" name="create_record" id="create_record"> <span class="icon text-white-50"><i class="fas fa-plus"></i></span><span class="text">Tambah Data</span></button>
+                  <h1 class="h3 mb-2 text-gray-800">Tabel Periode</h1>
+                  <button type="button" class="btn btn-success btn-icon-split m-1" name="create_record" id="create_record"> <span class="icon text-white-50"><i class="fas fa-plus"></i></span><span class="text">Tambah Periode</span></button>
 
                   <!-- modal start -->
                   <div class="modal fade" id="formModal" role="dialog">
@@ -30,44 +30,14 @@
                           <form method="POST" id="sample_form">
                             @csrf
                               <div class="form-group">
-                                <label for="formNama">Nama</label>
-                                <input type="text" class="form-control" name="nama" id="nama" value="">
-                              </div>
-                               <div class="form-group">
-                                <label for="formPeriode">Periode</label>
-                                 {{-- <input type="text" class="form-control" id="inputPeriode">  --}}
-                                   <select name="id_periode" class="form-control" id="selectPeriode" >
-                                    @foreach ($periodes_item as $periode)
-                                      <option value="{{$periode->id}}">{{$periode->periode}}</option>
-                                    @endforeach
-                                   </select>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="myCheck" onclick="myFunction()">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Tambah Periode
-                                    </label><br>
-                                  </div>
-                                </div>
-                                       <div class="form-group" id="text1" style="display: none">
-                                        <input type="text" class="form-control mt-2" name="tambah_periode" id="tingkat_kompotensi" placeholder="Tambahkan Periode">
-                                      </div>
-                              <div class="form-group">
-                                <label for="formTingkatKompetensi">Tingkat Kompetensi</label>
-                                <input type="text" class="form-control" name="tingkat_kompetensi" id="tingkat_kompetensi"  value="">
-                              </div>
-                              
-                              <div class="form-group">
-                                <label for="formTanggalTerbit">Tanggal Terbit</label>
-                                <input type="text" class="form-control datepicker" name="tanggal_terbit" id="tanggal_terbit" placeholder="dd-mm-yyyy">
+                                <label for="formNama">Periode</label>
+                                <input type="text" class="form-control" name="periode" id="Periode" value="">
                               </div>
                               <div class="form-group">
-                                <label for="formTanggalPengambilan">Tanggal Pengambilan</label>
-                                <input type="text" class="form-control datepicker2" name="tanggal_pengambilan" id="tanggal_pengambilan" placeholder="dd-mm-yyyy">
+                                <label for="formKeterangan">Keterangan</label>
+                                <input type="text" class="form-control" name="keterangan" id="Keterangan" value="">
                               </div>
-                              <div class="form-group">
-                                <label for="keterangan">keterangan</label>
-                                <input type="text" class="form-control" name="keterangan" id="keterangan" value="">
-                              </div>
+                               
                             </div>
                               <div class="modal-footer">
                                 <input type="hidden" name="action" id="action" />
@@ -107,13 +77,10 @@
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr>
-                    <th width="22%">Nama</th>
-                    <th width="10%">Periode</th>
-                    <th >Tingkat<br>Kompetensi</th>
-                    <th >Tanggal<br>Terbit</th>
-                    <th >Tanggal<br>Pengambilan</th>
+                    <th width="30%">Nama Periode</th>
+                    {{-- <th >Waktu Pembuatan</th> --}}
                     <th >Keterangan</th>
-                    <th width="10%">Action</th>
+                    <th width="15%">Action</th>
                   </tr>
                 </thead>
               </table>
@@ -182,33 +149,17 @@
           processing: true,
           serverSide: true,
           ajax:{
-          url: "{{ route('database.index') }}",
+          url: "{{ route('periode.index') }}",
           },
 
           columns:[
           {
-            data: 'nama',
-            name: 'nama',
-          },
-          {
-            data: 'id_periode',
-            name: 'id_periode'
-          },
-          {
-            data: 'tingkat_kompetensi',
-            name: 'tingkat_kompetensi'
-          },
-          {
-            data: 'tanggal_terbit',
-            name: 'tanggal_terbit',
-          },
-          {
-            data: 'tanggal_pengambilan',
-            name: 'tanggal_pengambilan',
+            data: 'periode',
+            name: 'periode',
           },
           {
             data: 'keterangan',
-            name: 'keterangan',
+            name: 'keterangan'
           },
           {
             data: 'action',
@@ -230,97 +181,89 @@
           $('#sample_form').on('submit', function(event){
             event.preventDefault();
             if($('#action').val() == 'Add')
-            {
-            $.ajax({
-              url:"{{ route('database.store') }}",
-              method:"POST",
-              data: new FormData(this),
-              contentType: false,
-              cache:false,
-              processData: false,
-              dataType:"json",
-              success:function(data)
               {
-              var html = '';
-              if(data.errors)
-              {
-                html = '<div class="alert alert-danger">';
-                for(var count = 0; count < data.errors.length; count++)
+              $.ajax({
+                url:"{{ route('periode.store') }}",
+                method:"POST",
+                data: new FormData(this),
+                contentType: false,
+                cache:false,
+                processData: false,
+                dataType:"json",
+                success:function(data)
                 {
-                html += '<p>' + data.errors[count] + '</p>';
+                var html = '';
+                if(data.errors)
+                {
+                  html = '<div class="alert alert-danger">';
+                  for(var count = 0; count < data.errors.length; count++)
+                  {
+                  html += '<p>' + data.errors[count] + '</p>';
+                  }
+                  html += '</div>';
                 }
-                html += '</div>';
+                if(data.success)
+                {
+                  html = '<div id="alertSuccess" class="alert alert-success" >' + data.success + '</div>';
+                  $('#sample_form')[0].reset();
+                  $('#dataTable').DataTable().ajax.reload();
+                  setTimeout(function(){
+                    $('#formModal').modal('hide');
+                    $('#alertSuccess').remove();
+                  }, 2000);
+                }
+                $('#form_result').html(html);
+                }
+              })
               }
-              if(data.success)
-              {
-                html = '<div id="alertSuccess" class="alert alert-success" >' + data.success + '</div>';
-                $('#sample_form')[0].reset();
-                $('#dataTable').DataTable().ajax.reload();
-                setTimeout(function(){
-                  $('#formModal').modal('hide');
-                  $('#alertSuccess').remove();
-                }, 2000);
-              }
-              $('#form_result').html(html);
-              }
-            })
-            }
 
             if($('#action').val() == "Edit")
-          {
-          $.ajax({
-            url:"{{ route('database.update') }}",
-            method:"POST",
-            data:new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            dataType:"json",
-            success:function(data)
-            {
-            var html = '';
-            if(data.errors)
-            {
-              html = '<div class="alert alert-danger">';
-              for(var count = 0; count < data.errors.length; count++)
               {
-              html += '<p>' + data.errors[count] + '</p>';
+              $.ajax({
+                url:"{{ route('periode.update') }}",
+                method:"POST",
+                data:new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType:"json",
+                success:function(data)
+                {
+                var html = '';
+                if(data.errors)
+                {
+                  html = '<div class="alert alert-danger">';
+                  for(var count = 0; count < data.errors.length; count++)
+                  {
+                  html += '<p>' + data.errors[count] + '</p>';
+                  }
+                  html += '</div>';
+                }
+                if(data.success)
+                {
+                  html = '<div id="alertSuccess" class="alert alert-success">' + data.success + '</div>';
+                  $('#sample_form')[0].reset();
+                  $('#dataTable').DataTable().ajax.reload();
+                  setTimeout(function(){
+                      $('#formModal').modal('hide');
+                    }, 2000);
+                }
+                $('#form_result').html(html);
+                $('#sample_form')[0].reset();
+                }
+              });
               }
-              html += '</div>';
-            }
-            if(data.success)
-            {
-              html = '<div id="alertSuccess" class="alert alert-success">' + data.success + '</div>';
-              $('#sample_form')[0].reset();
-              $('#dataTable').DataTable().ajax.reload();
-              setTimeout(function(){
-                  $('#formModal').modal('hide');
-                }, 2000);
-            }
-            $('#form_result').html(html);
-            $('#sample_form')[0].reset();
-            }
-          });
-          }
         });
-
-        
-
-      
 
         $(document).on('click', '.edit', function(){
           var id = $(this).attr('id');
           $('#form_result').html('');
           $.ajax({
-          url:"database/"+id+"/edit",
+          url:"periode/"+id+"/edit",
           dataType:"json",
           success:function(html){
-            $('#nama').val(html.data.nama);
-            $('#id_periode').val(html.data.id_periode);
-            $('#tingkat_kompetensi').val(html.data.tingkat_kompetensi);
-            $('#tanggal_terbit').val(html.data.tanggal_terbit);
-            $('#tanggal_pengambilan').val(html.data.tanggal_pengambilan);
-            $('#keterangan').val(html.data.keterangan);
+            $('#Periode').val(html.data.periode);
+            $('#Keterangan').val(html.data.keterangan);
             $('#hidden_id').val(html.data.id);
             $('.modal-title').text("Edit New Record");
             $('#action_button').val("Edit");
@@ -339,7 +282,7 @@
 
         $('#ok_button').click(function(){
         $.ajax({
-          url:"database/destroy/"+user_id,
+          url:"periode/destroy/"+user_id,
           beforeSend:function(){
           $('#ok_button').text('Deleting...');
           },
