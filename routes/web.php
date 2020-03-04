@@ -20,25 +20,25 @@ Route::prefix('admin')
         Route::get('/', 'DashboardController@index')
             ->name('dashboard');
 
-            Route::resource('database', 'DatabasesController' )
-            ->middleware(['auth','admin']);
+            Route::resource('database', 'DatabasesController');
 
-            Route::get('database/destroy/{id}','DatabasesController@destroy')
-            ->middleware(['auth','admin']);
+            Route::get('database/destroy/{id}','DatabasesController@destroy');
 
             Route::post('database/update','DatabasesController@update')
-            ->name('database.update')
-            ->middleware(['auth','admin']);
+            ->name('database.update');
 
-            Route::resource('periode', 'PeriodeController' )
-            ->middleware(['auth','admin']);
+            Route::resource('periode', 'PeriodeController');
 
             Route::post('periode/update','PeriodeController@update')
-            ->name('periode.update')
-            ->middleware(['auth','admin']);
+            ->name('periode.update');
 
-            Route::get('periode/destroy/{id}','PeriodeController@destroy')
-            ->middleware(['auth','admin']);
+            Route::get('periode/destroy/{id}','PeriodeController@destroy');
+
+            Route::get('export', 'DatabasesController@databasesExport')
+            ->name('database.export');
+
+            Route::post('import', 'DatabasesController@databasesImport')
+            ->name('database.import');
 
         // Route::get('database', 'DatabasesController@index')
         //     ->name('database');

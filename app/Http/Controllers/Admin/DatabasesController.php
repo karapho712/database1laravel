@@ -4,12 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
+use App\User;
 use App\alumnidatabases;
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
 use App\periodes;
 use Validator;
 use App\Http\Requests\Admin\alumnidatabasesRequest;
 use App\Http\Requests\Admin\periodesRequest;
 use Illuminate\Http\Request;
+
+use Maatwebsite\Excel\Facades\Excel;
 
 class DatabasesController extends Controller
 {
@@ -186,7 +191,11 @@ class DatabasesController extends Controller
             // // Echo "<pre>";
             // // print_r("tambah periode check");
         } else {
-            $data = $request->all();
+            // $data = $request->all();
+
+            // Echo "<pre>";
+            // print_r($data);
+            // exit();
 
             alumnidatabases::create([
                 'nama' =>$request->input('nama'),
@@ -196,6 +205,7 @@ class DatabasesController extends Controller
                 'tanggal_pengambilan' =>$b,
                 'keterangan' =>$request->input('keterangan')
             ]);
+
             // Echo "<pre>";
             // print_r($data);
         }
@@ -336,5 +346,42 @@ class DatabasesController extends Controller
     {
         $data = alumnidatabases::findOrFail($id);
         $data->delete();
+    }
+
+    public function databasesExport() {
+        // $databases = alumnidatabases::select('nama', 'id_periode', 'tingkat_kompetensi', 'tanggal_terbit', 'tanggal_pengambilan', 'keterangan')->get();
+
+        return Excel::download(new UsersExport, 'databaseswebsite.xlsx');
+
+        // return Excel::create('database', function($excel) use($databases){
+        //     $excel->sheet('myDatabase', function($sheet) use($databases){
+        //         $sheet->fromArray($databases);
+        //     });
+        // })->download('xls');
+    }
+
+    public function databasesImport(Request $request) {
+        // $databases = alumnidatabases::select('nama', 'id_periode', 'tingkat_kompetensi', 'tanggal_terbit', 'tanggal_pengambilan', 'keterangan')->get();
+
+        $users = Excel::toCollection(new UsersImport(), $request->file('fileImport'));
+        // Excel::import(new UsersImport, 'users.xlsx');
+        
+        foreach ($users[0] as $user){
+            alumnidatabases::where('id', $user[0])->update([
+                'nama' => $user[1],
+                'id_periode'=> $user[2],
+                'tingkat_kompetensi'=> $user[3],
+                'tanggal_terbit'=> $user[4],
+                'tanggal_pengambilan'=> $user[5],
+                'keterangan'=> $user[6],
+            ]);
+        }
+        return redirect('admin/database');
+
+        // return Excel::create('database', function($excel) use($databases){
+        //     $excel->sheet('myDatabase', function($sheet) use($databases){
+        //         $sheet->fromArray($databases);
+        //     });
+        // })->download('xls');
     }
 }
