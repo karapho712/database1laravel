@@ -40,6 +40,9 @@ Route::prefix('admin')
             Route::post('import', 'DatabasesController@databasesImport')
             ->name('database.import');
 
+            Route::get('cetakpdf', 'DatabasesController@cetak_pdf')
+            ->name('cetakpdf');
+
         // Route::get('database', 'DatabasesController@index')
         //     ->name('database');
 

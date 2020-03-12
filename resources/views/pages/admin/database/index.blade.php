@@ -100,6 +100,11 @@
                               <div>
                                 <a href="{{ route('database.export')}}" class="btn btn-info">Export</a>
                               </div>
+                              <br>
+                              <label class="control-label ">Export Database PDF: </label>
+                              <div>
+                                <a href="{{ route('cetakpdf')}}" class="btn btn-info">Export PDF</a>
+                              </div>
                              
                               <hr>
 

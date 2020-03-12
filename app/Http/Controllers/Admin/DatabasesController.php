@@ -13,8 +13,12 @@ use Validator;
 use App\Http\Requests\Admin\alumnidatabasesRequest;
 use App\Http\Requests\Admin\periodesRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+
 
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
+use PDF;
 
 class DatabasesController extends Controller
 {
@@ -348,6 +352,19 @@ class DatabasesController extends Controller
         $data->delete();
     }
 
+    public function cetak_pdf() {
+        // alumnidatabases
+        $datacetak = alumnidatabases::with([
+            'periodes'
+        ])->get();
+        // dd($datacetak);
+        // return $datacetak;
+        
+        // $pdf = PDF::loadview('cetak_pdf');
+    	$pdf = PDF::loadview('pages.admin.database.cetak_pdf',['datapdf'=>$datacetak]);
+    	return $pdf->download('data.pdf');
+    }
+
     public function databasesExport() {
         // $databases = alumnidatabases::select('nama', 'id_periode', 'tingkat_kompetensi', 'tanggal_terbit', 'tanggal_pengambilan', 'keterangan')->get();
 
@@ -363,20 +380,100 @@ class DatabasesController extends Controller
     public function databasesImport(Request $request) {
         // $databases = alumnidatabases::select('nama', 'id_periode', 'tingkat_kompetensi', 'tanggal_terbit', 'tanggal_pengambilan', 'keterangan')->get();
 
-        $users = Excel::toCollection(new UsersImport(), $request->file('fileImport'));
-        // Excel::import(new UsersImport, 'users.xlsx');
-        
-        foreach ($users[0] as $user){
-            alumnidatabases::where('id', $user[0])->update([
-                'nama' => $user[1],
-                'id_periode'=> $user[2],
-                'tingkat_kompetensi'=> $user[3],
-                'tanggal_terbit'=> $user[4],
-                'tanggal_pengambilan'=> $user[5],
-                'keterangan'=> $user[6],
+        // if ($request->file('fileImport')) {
+        //     // alumnidatabases::truncate();
+
+        //     Excel::import(new UsersImport(), request()->file('fileImport'));
+        //     return back();
+        // }
+
+        $users = Excel::toArray(new UsersImport(), $request->file('fileImport'));
+        // dd($users);
+
+        foreach ($users['0'] as $user){
+            alumnidatabases::where('id', $user["id"])->updateOrInsert([
+                'nama' => $user["nama"],
+                'id_periode'=> $user["id_periode"],
+                'tingkat_kompetensi'=> $user["tingkat_kompetensi"],
+                'tanggal_terbit'=> $user["tanggal_terbit"],
+                'tanggal_pengambilan'=> $user["tanggal_pengambilan"],
+                'keterangan'=> $user["keterangan"],
             ]);
         }
+
+        // return array(head($users))
+        // ->each(function ($row, $key) {
+        //     alumnidatabases::where('id', $row['id'])
+        //         ->update([
+        //             'nama' => $row['nama'],
+        //             'id_periode'=> $row['id_periode'],
+        //             'tingkat_kompetensi'=> $row['tingkat_kompetensi'],
+        //             'tanggal_terbit'=> $row['tanggal_terbit'],
+        //             'tanggal_pengambilan'=> $row['tanggal_pengambilan'],
+        //             'keterangan'=>$row['keterangan'],
+        //         ]);
+        // });
+
+        
+        // return head($users) -> each(function ($row, $key) {
+        //     alumnidatabases::where('id', $row['id'])
+        //         ->update([
+        //             'nama' => $row['nama'],
+        //             'id_periode'=> $row['id_periode'],
+        //             'tingkat_kompetensi'=> $row['tingkat_kompetensi'],
+        //             'tanggal_terbit'=> $row['tanggal_terbit'],
+        //             'tanggal_pengambilan'=> $row['tanggal_pengambilan'],
+        //             'keterangan'=>$row['keterangan'],
+        //         ]);
+        // });
+        
+        // Excel::import(new UsersImport, 'users.xlsx');
+
+        // $headings = (new HeadingRowImport)->toArray('fileImport');
+
+        // dd($users); 
+
+        // foreach ($users[0] as $user){
+        //     alumnidatabases::where('id', $user[0])->update(Arr::except($row, ['id']));
+        // }
+    
+
+        // update(Arr::except($row, ['id']))
+
+        // return collect(head($users))
+        // ->each(function ($row, $key) {
+        //     alumnidatabases::where('id', $row['id'])
+        //         ->update([
+        //             'nama' => $row['nama'],
+        //             'id_periode'=> $row['id_periode'],
+        //             'tingkat_kompetensi'=> $row['tingkat_kompetensi'],
+        //             'tanggal_terbit'=> $row['tanggal_terbit'],
+        //             'tanggal_pengambilan'=> $row['tanggal_pengambilan'],
+        //             'keterangan'=>$row['keterangan'],
+        //         ]);
+        // });
+
+
+        // $xusers =head($users);
+        // $xusers -> each(function ($row, $key) {
+        //     alumnidatabases::where('id', $row['id'])
+        //         ->update(Arr::except($row, ['id']));
+        // });
+        
+        // foreach ($users[0] as $user){
+        //     alumnidatabases::updateOrInsert('id', $user[0])->update([
+        //         'nama' => $user[1],
+        //         'id_periode'=> $user[2],
+        //         'tingkat_kompetensi'=> $user[3],
+        //         'tanggal_terbit'=> $user[4],
+        //         'tanggal_pengambilan'=> $user[5],
+        //         'keterangan'=> $user[6],
+        //     ]);
+        // }
+
         return redirect('admin/database');
+        
+        // return ($users);
 
         // return Excel::create('database', function($excel) use($databases){
         //     $excel->sheet('myDatabase', function($sheet) use($databases){
