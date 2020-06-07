@@ -34,8 +34,7 @@ class DatabasesController extends Controller
 
         if(request()->ajax())
         {
-
-            return datatables()->of(alumnidatabases::with('periodes')->latest()->get())
+            return dataTables()->of(alumnidatabases::with('periodes')->latest()->get())
                     ->addColumn('id_periode', function($nilai){
                         if ($nilai->periodes == NULL){
                             return "Periode Tidak Ditemukan";
@@ -60,7 +59,6 @@ class DatabasesController extends Controller
                             return "Belum Di Input";
                         }
                         
-                        
                     })
                     ->rawColumns(['tanggal_terbit'])
 
@@ -75,7 +73,6 @@ class DatabasesController extends Controller
                         else {
                             return "Belum Di Input";
                         }
-                        
                         
                     })
                     ->rawColumns(['tanggal_pengambilan'])

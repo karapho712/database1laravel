@@ -192,8 +192,8 @@
 
 {{-- <script src="{{url('backend/js/sb-admin-2.min.js')}}"></script> --}}
 {{-- <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script> --}}
-    <script>
-      function myFunction() {
+<script>
+  function myFunction() {
           var checkbox = $("#myCheck");
           var text = $("#selectPeriode");
           var tngkt_period = $("#tingkat_kompotensi");
@@ -247,7 +247,6 @@
           ajax:{
           url: "{{ route('database.index') }}",
           },
-
           columns:[
           {
             data: 'nama',
@@ -360,10 +359,6 @@
           }
         });
 
-        
-
-      
-
         $(document).on('click', '.edit', function(){
           var id = $(this).attr('id');
           $('#form_result').html('');
@@ -410,7 +405,8 @@
         })
       });
     });
-    </script>
+ 
+</script>
 
 
 @endpush 
