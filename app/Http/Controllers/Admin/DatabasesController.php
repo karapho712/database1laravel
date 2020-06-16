@@ -135,6 +135,16 @@ class DatabasesController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = array(
+            'nama'    =>  'required'
+        );
+        $error = Validator::make($request->all(), $rules);
+        
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+
         if ($request->filled('tanggal_terbit')){
             $a = date('Y-m-d',strtotime($request->input('tanggal_terbit')));
         } else {
@@ -147,18 +157,6 @@ class DatabasesController extends Controller
             $b=NULL;
         }
 
-        $rules = array(
-            'nama'    =>  'required'
-        );
-
-        $error = Validator::make($request->all(), $rules);
-
-        if($error->fails())
-        {
-            return response()->json(['errors' => $error->errors()->all()]);
-        }
-
-        
 
         if($request->filled('tambah_periode')){
             

@@ -13,9 +13,10 @@
           <div class="card-header py-3">
                <div class="d-sm-flex align-items-center justify-content-between"> 
                   <h1 class="h3 mb-2 text-gray-800 p-2 flex-grow-1 bd-highligh">Data Mahasiswa</h1>
-                    <button type="button" class="btn btn-info btn-icon-split m-1" name="ImportExport" id="btnImportExport"> <span class="icon text-white-50"><i class="fas fa-file"></i></span><span class="text">Import/Export</span>
-                    </button>
-                  <button type="button" class="btn btn-success btn-icon-split m-1" name="create_record" id="create_record"> <span class="icon text-white-50"><i class="fas fa-plus"></i></span><span class="text">Tambah Data</span></button>
+                  <button type="button" class="btn btn-info btn-icon-split m-1" name="ImportExport" id="btnImportExport"> <span class="icon text-white-50"><i class="fas fa-file"></i></span><span class="text">Import/Export</span>
+                  </button>
+                  <button type="button" class="btn btn-success btn-icon-split m-1" name="create_record" id="create_record"> <span class="icon text-white-50"><i class="fas fa-plus"></i></span><span class="text">Tambah Data</span>
+                  </button>
 
                   <!-- modal start -->
                   <div class="modal fade" id="formModal" role="dialog">
@@ -73,11 +74,11 @@
                               </div>
                             </div>
                               <div class="modal-footer">
-                                <input type="hidden" name="action" id="action" />
+                                {{-- <input type="hidden" name="action" id="action" /> --}}
                                  <input type="hidden" name="hidden_id" id="hidden_id" />
                                 <input type="submit" name="action_button" id="action_button" class="btn btn-success" value="Add" />
                               </div>
-                        </form>
+                          </form>
                       </div>
                     </div>
                   </div>
@@ -175,7 +176,8 @@
 
 
 @push('prepend-style')
-<link rel="stylesheet" href="{{url('frontend/libraries/bootstrap/css/dataTables.bootstrap4.min.css')}}" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.css"/>
+{{-- <link rel="stylesheet" href="{{url('frontend/libraries/bootstrap/css/dataTables.bootstrap4.min.css')}}" /> --}}
 <link rel="stylesheet" href="{{url('frontend/libraries/gijgo/css/gijgo.min.css')}}">
 
 {{-- <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> --}}
@@ -184,9 +186,11 @@
 @push('addon-script')
     
 {{-- <script src="{{url('frontend/libraries/jquery/jquery-3.4.1.min.js')}}"></script> --}}
-<script src="{{url('frontend/libraries/jquery/jquery.dataTables.min.js')}}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.js"></script>
+{{-- <script src="{{url('frontend/libraries/jquery/jquery.dataTables.min.js')}}"></script>  --}} {{-- klo pake ini jellek tampillanya --}}
 
-<script src="{{url('frontend/libraries/bootstrap/js/dataTables.bootstrap4.min.js')}}"></script>
+{{-- <script src="{{url('frontend/libraries/bootstrap/js/dataTables.bootstrap4.min.js')}}"></script> --}}
+
 {{-- <script src="{{url ('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script> --}}
 <script src="{{url('frontend/libraries/gijgo/js/gijgo.min.js')}}"></script>
 
@@ -284,7 +288,7 @@
 
           $('#sample_form').on('submit', function(event){
             event.preventDefault();
-            if($('#action').val() == 'Add')
+            if($('#action_button').val() == 'Add')
             {
             $.ajax({
               url:"{{ route('database.store') }}",
@@ -367,7 +371,7 @@
           dataType:"json",
           success:function(html){
             $('#nama').val(html.data.nama);
-            $('#id_periode').val(html.data.id_periode);
+            $('#selectPeriode').val(html.data.id_periode);
             $('#tingkat_kompetensi').val(html.data.tingkat_kompetensi);
             $('#tanggal_terbit').val(html.data.tanggal_terbit);
             $('#tanggal_pengambilan').val(html.data.tanggal_pengambilan);
